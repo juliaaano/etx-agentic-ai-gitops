@@ -53,6 +53,7 @@ data:
     - agents
     - safety
     - vector_io
+    - telemetry
     models:
       - metadata: {}
         model_id: granite-3-2-8b-instruct
@@ -87,6 +88,14 @@ data:
           responses_store:
             type: sqlite
             db_path: \${env.SQLITE_STORE_DIR:=~/.llama/distributions/rh}/responses_store.db
+      telemetry:
+      - provider_id: meta-reference
+        provider_type: inline::meta-reference
+        config:
+          service_name: "\${env.OTEL_SERVICE_NAME:=}"
+          sinks: \${env.TELEMETRY_SINKS:=console}
+          otel_exporter_otlp_endpoint: \${env.OTEL_EXPORTER_OTLP_ENDPOINT:=}
+          sqlite_db_path: /opt/app-root/src/.llama/distributions/rh/trace_store.db
     server:
       port: 8321
     tools:
